@@ -1,3 +1,5 @@
+{% include 'header.html' %}
+
 {% for empleado in empleados %}
 
 <form method="post" action="/update" enctype="multipart/form-data">
@@ -13,11 +15,16 @@
     Correo:
     <input type="text" value=  "{{empleado[2]}}" name = "txtCorreo" id= "txtCorreo" >
     <br>
-
+    
+    Foto:
+    <br>
+    <img class="img-thumbnail" width="100" src="{{url_for('uploads',nombreFoto=empleado[3])}}" alt="">
+    <br>
     Foto:{{empleado[3]}}
     <input type="file" name = "txtFoto" id= "txtFoto" >
     <br>
     <br>
+
 
     <input type="submit" value = "Agregar">
 
@@ -29,3 +36,5 @@
     {{empleado[3]}}
 
 {% endfor %}
+
+{% include 'footer.html' %}
