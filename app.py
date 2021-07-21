@@ -22,6 +22,7 @@ mysql.init_app(app)
 CARPETA = os.path.join('uploads')
 app.config['CARPETA']=CARPETA
 
+#ruteo para que mande la foto al index
 @app.route('/uploads/<nombreFoto>')
 def uploads(nombreFoto):
    return send_from_directory(app.config['CARPETA'], nombreFoto)
@@ -43,10 +44,13 @@ def destroy(id):
    conn=mysql.connect()
    cursor=conn.cursor()
 
+   #pido a la base de datos que me traiga el nombre de la foto
    cursor.execute("SELECT foto FROM empleados WHERE id=%s",id)
    fila=cursor.fetchall()
+   #pido que elimine la foto
    os.remove(os.path.join(app.config['CARPETA'],fila[0][0]))
 
+   #Para el boton eliminar
    cursor.execute("DELETE FROM empleados WHERE id=%s", (id))
    conn.commit()
    return redirect('/')
@@ -122,6 +126,7 @@ def storage():
    sql = "INSERT INTO `empleados` (`id`, `nombre`, `correo`, `foto`) VALUES (NULL, %s,%s,%s);"
    datos= (_nombre, _correo, nuevoNombreFoto)
 
+   #Al crear un empleado, se dirige al index
    conn=mysql.connect()
    cursor=conn.cursor()
    cursor.execute(sql, datos)
