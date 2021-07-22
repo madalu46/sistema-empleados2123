@@ -10,6 +10,7 @@ import pymysql
 
 
 app= Flask(__name__)
+app.secret_key="Codoacodo"
 
 #Configuracion de base de datos
 mysql= MySQL()
@@ -111,8 +112,16 @@ def storage():
    _correo = request.form['txtCorreo']
    _foto = request.files['txtFoto']
 
-   if _nombre=='' or _correo=='' or _foto=='':
-      flash('Falta rellenar algun dato')
+   if _nombre=='':
+      flash('Falta llenar nombre')
+      return redirect(url_for('create'))
+
+   if _correo=='':
+      flash('Falta llenar correo')
+      return redirect(url_for('create'))
+
+   if _foto.filename=='':
+      flash('Falta elegir foto')
       return redirect(url_for('create'))
 
    now = datetime.now()
